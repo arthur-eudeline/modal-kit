@@ -1,0 +1,26 @@
+{
+  "name": "@arthur-eudeline/modal-kit",
+  "version": "0.0.0",
+  "description": "A lightweight modale library",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest --all",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthur-eudeline/modal-kit.git"
+  },
+  "keywords": [
+    "modal"
+  ],
+  "author": "Arthur Eudeline <contact@arthur-eudeline.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arthur-eudeline/modal-kit/issues"
+  },
+  "homepage": "https://github.com/arthur-eudeline/modal-kit#readme",
+  "devDependencies": {
+    "@arthur.eudeline/build-kit": "^0.0.3"
+  }
+}
