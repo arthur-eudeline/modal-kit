@@ -2,13 +2,23 @@ const { WebpackConfigBuilder } = require('@arthur.eudeline/build-kit');
 const { join } = require('path');
 
 const config = WebpackConfigBuilder()
-  .setOutputPath( join(__dirname, './dist') )
+  .setOutputPath({
+    absolute: join(__dirname, './dist'),
+    relative: './dist'
+  })
   .enableFilenamesHash(false)
-  .enableAssetFile(false)
+  .enableOptimization( false)
+  .enableAssetFile(true)
+  // Entries
   .addEntry(
     join(__dirname, './lib/index.ts'),
     'index'
   )
+  // Dev server
+  .addDevServerStatic({
+    directory: join(__dirname, 'demo'),
+    publicPath: '/',
+  })
   .build();
 
 module.exports = config;

@@ -1,12 +1,12 @@
-import {Modal} from "./lib";
+import {Modal, ModalKit} from "./lib";
 
 
 declare global {
   interface Window {
-    modalKit: ModalKit
+    modalKit: typeof ModalKit
   }
   
-  const modalKit:ModalKit
+  const modalKit:typeof ModalKit
 }
 
 /**

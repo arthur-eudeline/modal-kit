@@ -1,22 +1,22 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { Modal } from "./modal";
-import { ModalStateClasses } from "../types";
+import {ModalStateClasses} from "../types";
 
 
 /**
  * The library object
  */
-export default class ModalKit {
+const ModalKit = {
   /**
    * The default modal constructor
    */
-  static modal = Modal;
+  modal: Modal,
   
   /**
    * Exposes the different methods to modify the library defaults
    */
-  static defaults = {
+  defaults: {
     /**
      * Changes the defaults modal states classes.
      * States classes are applied to the modal root depending on its state (hidden, visible, ...)
@@ -26,6 +26,7 @@ export default class ModalKit {
       Modal.stateClasses = {...Modal.stateClasses, ...classes};
     }
   }
-}
+};
 
 window.modalKit = ModalKit;
+export default ModalKit;

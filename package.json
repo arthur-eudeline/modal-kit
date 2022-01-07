@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "description": "A lightweight modale library",
   "main": "dist/index.js",
+  "types": "types.d.ts",
   "scripts": {
     "test": "jest --all",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "dev": "NODE_ENV=development; webpack --mode development",
+    "serve": "webpack serve --mode development"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,6 @@
   },
   "homepage": "https://github.com/arthur-eudeline/modal-kit#readme",
   "devDependencies": {
-    "@arthur.eudeline/build-kit": "^0.0.3"
+    "@arthur.eudeline/build-kit": "^0.0.6"
   }
 }

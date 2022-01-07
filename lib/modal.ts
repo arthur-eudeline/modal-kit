@@ -26,7 +26,7 @@ export class Modal {
    */
   static stateClasses:ModalStateClasses = {
     hidden: ['hidden'],
-    visible: undefined,
+    visible: [],
   }
   
   /**
@@ -76,7 +76,7 @@ export class Modal {
     if (isClassListEmpty(classes))
       return
     
-    el.classList.add(classes);
+    el.classList.add( ...classes );
   }
   
   
@@ -92,7 +92,7 @@ export class Modal {
     if (isClassListEmpty(classes))
       return
     
-    el.classList.remove(classes);
+    el.classList.remove( ...classes );
   }
   
   
@@ -104,11 +104,11 @@ export class Modal {
       return;
     
     if (!this.addedToDOM) {
-      document.body.appendChild(this.modalEl);
+      document.body.appendChild(this.modalEl!);
       this.addedToDOM = true;
     } else {
-      this.removeClasses(this.modalEl, Modal.stateClasses.hidden);
-      this.addClasses(this.modalEl, Modal.stateClasses.visible);
+      this.removeClasses(this.modalEl!, Modal.stateClasses.hidden);
+      this.addClasses(this.modalEl!, Modal.stateClasses.visible);
     }
   }
   
@@ -121,8 +121,11 @@ export class Modal {
    * @see Modal.destroy()
    */
   public dismiss ():void {
-    this.removeClasses(this.modalEl, Modal.stateClasses.visible);
-    this.addClasses(this.modalEl, Modal.stateClasses.hidden);
+    if (this.destroyed)
+      return;
+    
+    this.removeClasses(this.modalEl!, Modal.stateClasses.visible);
+    this.addClasses(this.modalEl!, Modal.stateClasses.hidden);
   }
   
   
@@ -134,7 +137,10 @@ export class Modal {
    * @see Modal.dismiss()
    */
   public destroy ():void {
-    this.modalEl.remove();
+    if (this.destroyed)
+      return;
+    
+    this.modalEl!.remove();
     delete this.modalEl;
     this.destroyed = true;
   }
