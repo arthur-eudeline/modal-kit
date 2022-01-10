@@ -16,7 +16,7 @@ export class ModalBuilder {
   /**
    * The base classes that will be applied to each modal element
    */
-  static readonly classes: ModalClasses = {
+  static readonly classes: Required<ModalClasses> = {
     container: [ 'modal-container' ],
     overlay: [ 'modal-overlay' ],
     modal: [ 'modal' ],
@@ -47,7 +47,7 @@ export class ModalBuilder {
     const el = document.createElement('div');
     
     // Add the classes
-    el.classList.add( ...ModalBuilder.classes.container, ...(this.settings.classes?.container ?? []) );
+    el.classList.add( ...ModalBuilder.classes.container!, ...(this.settings.classes?.container ?? []) );
     
     return el;
   }
@@ -101,11 +101,11 @@ export class ModalBuilder {
   private buildDismissBtn(): HTMLDivElement {
     // Builds the button container
     const container = document.createElement('div');
-    container.classList.add( ...ModalBuilder.classes.dismissBtn.container, ...(this.settings.classes?.dismissBtn?.container ?? []) );
+    container.classList.add( ...ModalBuilder.classes.dismissBtn.container!, ...(this.settings.classes?.dismissBtn?.container ?? []) );
     
     // Builds the btn
     const btn = document.createElement('i');
-    btn.classList.add( ...ModalBuilder.classes.dismissBtn.btn, ...(this.settings.classes?.dismissBtn?.btn ?? []) );
+    btn.classList.add( ...ModalBuilder.classes.dismissBtn.btn!, ...(this.settings.classes?.dismissBtn?.btn ?? []) );
     
     container.appendChild(btn);
     
