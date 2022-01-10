@@ -1,7 +1,7 @@
 {
   "name": "@arthur-eudeline/modal-kit",
   "version": "0.0.0",
-  "description": "A lightweight modale library",
+  "description": "A lightweight modal library",
   "main": "dist/index.js",
   "types": "types.d.ts",
   "scripts": {
@@ -23,7 +23,10 @@
     "url": "https://github.com/arthur-eudeline/modal-kit/issues"
   },
   "homepage": "https://github.com/arthur-eudeline/modal-kit#readme",
+  "dependencies": {
+    "tailwindcss": "^3.0.12"
+  },
   "devDependencies": {
-    "@arthur.eudeline/build-kit": "^0.0.6"
+    "@arthur.eudeline/build-kit": "file:../arthur.eudeline-build-kit-0.0.6.tgz"
   }
 }
