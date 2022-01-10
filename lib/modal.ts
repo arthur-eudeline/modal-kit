@@ -60,7 +60,7 @@ export class Modal {
    */
   public constructor (settings:ModalSettings) {
     this.settings = {...Modal.defaultSettings, ...settings};
-    this.modalEl = new ModalBuilder(settings).build();
+    this.modalEl = new ModalBuilder(this.settings).build();
   }
   
   
