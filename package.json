@@ -39,6 +39,9 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
+    "transform": {
+      "\\.ts$": ["babel-jest", { "configFile":  "./tests/config/babel.config.js"}]
+    },
     "setupFilesAfterEnv": [
       "@alex_neo/jest-expect-message"
     ]
