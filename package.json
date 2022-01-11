@@ -26,9 +26,21 @@
   "dependencies": {
     "@types/lodash": "^4.14.178",
     "lodash": "^4.17.21",
-    "tailwindcss": "^3.0.12"
+    "tailwindcss": "^3.0.12",
+    "uid": "^2.0.0"
   },
   "devDependencies": {
-    "@arthur.eudeline/build-kit": "file:../arthur.eudeline-build-kit-0.0.6.tgz"
+    "@alex_neo/jest-expect-message": "^1.0.5",
+    "@arthur.eudeline/build-kit": "file:../arthur.eudeline-build-kit-0.0.6.tgz",
+    "@types/jest": "^27.4.0",
+    "@types/jsdom": "^16.2.14",
+    "jest": "^27.4.7",
+    "jsdom": "^19.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "@alex_neo/jest-expect-message"
+    ]
   }
 }

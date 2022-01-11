@@ -3,6 +3,7 @@ import {ModalBuilder} from "./modal-builder";
 import {isClassListEmpty} from "./utils";
 import {ModalEvent} from "./modal-event";
 import {cloneDeep} from "lodash";
+import {uid} from 'uid';
 
 
 /**
@@ -55,6 +56,11 @@ export class Modal {
    */
   private destroyed:boolean = false;
   
+  /**
+   * The HTML ID of the modal
+   * @private
+   */
+  private id:string;
   
   /**
    * The modal constructor
@@ -62,6 +68,12 @@ export class Modal {
    */
   public constructor (settings:ModalSettings) {
     this.settings = {...Modal.defaultSettings, ...settings};
+    
+    if (this.settings.id === undefined)
+      this.settings.id = uid(4);
+    
+    this.id = this.settings.id;
+    
     this.modalEl = new ModalBuilder(this).build();
   }
   
@@ -109,11 +121,11 @@ export class Modal {
       document.body.appendChild(this.modalEl!);
       this.addedToDOM = true;
       this.modalEl!.dispatchEvent( new ModalEvent('modal-initialized', this) );
-    } else {
-      this.removeClasses(this.modalEl!, Modal.stateClasses.hidden);
-      this.addClasses(this.modalEl!, Modal.stateClasses.visible);
     }
-  
+    
+    this.removeClasses(this.modalEl!, Modal.stateClasses.hidden);
+    this.addClasses(this.modalEl!, Modal.stateClasses.visible);
+    
     const event = new ModalEvent('modal-shown', this);
     this.modalEl!.dispatchEvent(event);
   };
@@ -131,7 +143,7 @@ export class Modal {
     
     this.removeClasses(this.modalEl!, Modal.stateClasses.visible);
     this.addClasses(this.modalEl!, Modal.stateClasses.hidden);
-  
+    
     const event = new ModalEvent( 'modal-dismissed', this);
     this.modalEl!.dispatchEvent(event);
   };
@@ -148,12 +160,12 @@ export class Modal {
     if (this.destroyed)
       return;
     
+    const event = new ModalEvent('modal-destroyed', this);
+    this.modalEl!.dispatchEvent(event);
+    
     this.modalEl!.remove();
     delete this.modalEl;
     this.destroyed = true;
-  
-    const event = new ModalEvent('modal-destroyed', this);
-    this.modalEl!.dispatchEvent(event);
   };
   
   
@@ -173,4 +185,12 @@ export class Modal {
   public addEventListener = ( type: ModalEvents | string, callback:(event:Event) => void, passive:boolean = true ):void => {
     this.modalEl?.addEventListener(type, callback, {passive});
   };
+  
+  
+  /**
+   * Gets the modal HTML Element
+   */
+  public getElement() : HTMLElement | undefined {
+    return this.modalEl;
+  }
 }

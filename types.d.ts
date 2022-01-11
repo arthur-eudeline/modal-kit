@@ -19,6 +19,12 @@ type ModalElement = HTMLElement | string | ((modal:Modal) => string | HTMLElemen
  */
 declare interface ModalSettings {
   /**
+   * An HTML ID that will be assign to the modal root.
+   * If not provided, it will be generated
+   */
+  id?:string
+  
+  /**
    * Whether or not a modal will be dismissible by the user.
    * If set to true, the modal will include a button to dismiss it by default.
    * However, you can still dismiss a non dismissible modal by calling directly

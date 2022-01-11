@@ -52,7 +52,7 @@ export class ModalBuilder {
   
   /**
    * Simplify the handling of modal elements
-   * 
+   *
    * @param el
    * @param modalElements
    * @private
@@ -99,6 +99,9 @@ export class ModalBuilder {
    */
   private buildContainer() : HTMLDivElement {
     const el = document.createElement('div');
+    
+    // Sets the ID
+    el.id = this.settings.id!;
     
     // Add the classes
     el.classList.add( ...ModalBuilder.classes.container!, ...(this.settings.classes?.container ?? []) );
