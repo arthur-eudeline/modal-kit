@@ -108,6 +108,7 @@ export class Modal {
     if (!this.addedToDOM) {
       document.body.appendChild(this.modalEl!);
       this.addedToDOM = true;
+      this.modalEl!.dispatchEvent( new ModalEvent('modal-initialized', this) );
     } else {
       this.removeClasses(this.modalEl!, Modal.stateClasses.hidden);
       this.addClasses(this.modalEl!, Modal.stateClasses.visible);

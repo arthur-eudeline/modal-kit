@@ -74,7 +74,7 @@ declare interface ModalSettings {
 /**
  * Defines different possible values for modal events
  */
-declare type ModalEvents = 'modal-shown' | 'modal-dismissed' | 'modal-destroyed';
+declare type ModalEvents = 'modal-initialized' | 'modal-shown' | 'modal-dismissed' | 'modal-destroyed';
 
 /**
  * Holds the different classes that will be applied on each modal part
