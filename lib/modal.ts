@@ -101,7 +101,7 @@ export class Modal {
   /**
    * Show the modal to the user
    */
-  public show ():void {
+  public show = ():void => {
     if (this.destroyed)
       return;
     
@@ -115,7 +115,7 @@ export class Modal {
   
     const event = new ModalEvent('modal-shown', this);
     this.modalEl!.dispatchEvent(event);
-  }
+  };
   
   /**
    * Hide the modal to the user. You can still show it by calling show method.
@@ -124,7 +124,7 @@ export class Modal {
    *
    * @see Modal.destroy()
    */
-  public dismiss ():void {
+  public dismiss = ():void => {
     if (this.destroyed)
       return;
     
@@ -133,7 +133,7 @@ export class Modal {
   
     const event = new ModalEvent( 'modal-dismissed', this);
     this.modalEl!.dispatchEvent(event);
-  }
+  };
   
   
   /**
@@ -143,7 +143,7 @@ export class Modal {
    *
    * @see Modal.dismiss()
    */
-  public destroy ():void {
+  public destroy = ():void => {
     if (this.destroyed)
       return;
     
@@ -153,15 +153,13 @@ export class Modal {
   
     const event = new ModalEvent('modal-destroyed', this);
     this.modalEl!.dispatchEvent(event);
-  }
+  };
   
   
   /**
    * Gets the modal settings
    */
-  public getSettings(): ModalSettings {
-    return cloneDeep<ModalSettings>(this.settings);
-  }
+  public getSettings = ():ModalSettings => cloneDeep<ModalSettings>(this.settings);
   
   
   /**
@@ -171,7 +169,7 @@ export class Modal {
    * @param callback
    * @param passive
    */
-  public addEventListener( type: ModalEvents | string, callback:(event:Event) => void, passive:boolean = true ) : void {
+  public addEventListener = ( type: ModalEvents | string, callback:(event:Event) => void, passive:boolean = true ):void => {
     this.modalEl?.addEventListener(type, callback, {passive});
-  }
+  };
 }

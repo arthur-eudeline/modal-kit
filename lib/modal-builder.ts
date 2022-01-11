@@ -1,4 +1,4 @@
-import {ModalClasses, ModalSettings} from "../types";
+import {ModalClasses, ModalElement, ModalSettings} from "../types";
 import {Modal} from "./modal";
 
 
@@ -51,6 +51,49 @@ export class ModalBuilder {
   
   
   /**
+   * Simplify the handling of modal elements
+   * 
+   * @param el
+   * @param modalElements
+   * @private
+   */
+  private handleModalElement(el:HTMLElement, modalElements?: ModalElement|ModalElement[]) : void {
+    if (modalElements === undefined)
+      return;
+    
+    // Convert to array if it is single
+    if (!Array.isArray(modalElements))
+      modalElements = [ modalElements ];
+    
+    // Loop over the elements
+    for (let modalElement of modalElements) {
+      // Execute callback if modalElement is a function
+      if (typeof modalElement === 'function')
+        modalElement = modalElement(this.modal);
+  
+      // Handle string case
+      if (typeof modalElement === 'string') {
+        const tempEl = document.createElement('div');
+        tempEl.innerHTML = modalElement;
+        
+        // If the string contains some html elements
+        if (tempEl.firstElementChild) {
+          modalElement = tempEl.firstElementChild as HTMLElement;
+        }
+        // If the string does not have HTML elements, we just append a default HTML element
+        else {
+          modalElement = tempEl;
+        }
+      }
+  
+      // Handle HTMLElement
+      if (modalElement instanceof HTMLElement)
+        el.appendChild(modalElement);
+    }
+  }
+  
+  
+  /**
    * Builds the modal container, which is the very root element of the modal
    * @private
    */
@@ -82,7 +125,7 @@ export class ModalBuilder {
   
     // Add overlay's onclick event
     if (this.settings.dismissible && (this.settings.overlay === true || (typeof this.settings.overlay === "object" && this.settings.overlay.dismissible) ))
-      el.onclick = (e) => { this.modal.dismiss(); }
+      el.onclick = (_) => { this.modal.dismiss(); }
     
     return el;
   }
@@ -130,7 +173,7 @@ export class ModalBuilder {
     btn.classList.add( ...ModalBuilder.classes.dismissBtn.btn!, ...(this.settings.classes?.dismissBtn?.btn ?? []) );
     
     if (this.settings.dismissible === true)
-      btn.onclick = (e) => { this.modal.dismiss(); }
+      btn.onclick = (_) => { this.modal.dismiss(); }
     
     container.appendChild(btn);
     
@@ -145,7 +188,7 @@ export class ModalBuilder {
   private buildTitle(): HTMLDivElement {
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.title, ...(this.settings.classes?.title ?? []) );
-    el.innerHTML = this.settings.title ?? '';
+    this.handleModalElement(el,this.settings.title);
     
     return el;
   }
@@ -158,7 +201,7 @@ export class ModalBuilder {
   private buildBody(): HTMLDivElement {
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.body, ...(this.settings.classes?.body ?? []) );
-    el.innerHTML = this.settings.body;
+    this.handleModalElement(el, this.settings.body);
     
     return el;
   }
@@ -171,11 +214,7 @@ export class ModalBuilder {
   private buildActions(): HTMLDivElement {
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.actions, ...(this.settings.classes?.actions ?? []) );
-    
-    el.innerHTML = (this.settings.actions?.map( (action) => typeof action === 'string'
-      ? action
-      : action.outerHTML
-    ) ?? [ '' ]).join('');
+    this.handleModalElement(el, this.settings.actions);
     
     return el;
   }

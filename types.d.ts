@@ -10,6 +10,11 @@ declare global {
 }
 
 /**
+ * Defines what can be used for building a modal element
+ */
+type ModalElement = HTMLElement | string | ((modal:Modal) => string | HTMLElement);
+
+/**
  * Defines the modal settings structure
  */
 declare interface ModalSettings {
@@ -44,20 +49,20 @@ declare interface ModalSettings {
    * A text that will be displayed above the modal body
    * HTML code is supported
    */
-  title?: string,
+  title?: string | ModalElement,
   
   /**
    * The text that will be displayed inside the modal.
    * HTML code is supported.
    */
-  body: string,
+  body: string | ModalElement,
   
   /**
    * A set of HTML Elements that will be displayed bellow
    * the modal body
    *
    */
-  actions?: HTMLElement[] | string[],
+  actions?: ModalElement[],
   
   /**
    * Defines the additional classes to add
