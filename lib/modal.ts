@@ -1,6 +1,8 @@
-import {ModalSettings, ModalStateClasses} from "../types";
+import {ModalEvents, ModalSettings, ModalStateClasses} from "../types";
 import {ModalBuilder} from "./modal-builder";
 import {isClassListEmpty} from "./utils";
+import {ModalEvent} from "./modal-event";
+import {cloneDeep} from "lodash";
 
 
 /**
@@ -60,7 +62,7 @@ export class Modal {
    */
   public constructor (settings:ModalSettings) {
     this.settings = {...Modal.defaultSettings, ...settings};
-    this.modalEl = new ModalBuilder(this.settings).build();
+    this.modalEl = new ModalBuilder(this).build();
   }
   
   
@@ -110,8 +112,10 @@ export class Modal {
       this.removeClasses(this.modalEl!, Modal.stateClasses.hidden);
       this.addClasses(this.modalEl!, Modal.stateClasses.visible);
     }
-  }
   
+    const event = new ModalEvent('modal-shown', this);
+    this.modalEl!.dispatchEvent(event);
+  }
   
   /**
    * Hide the modal to the user. You can still show it by calling show method.
@@ -126,6 +130,9 @@ export class Modal {
     
     this.removeClasses(this.modalEl!, Modal.stateClasses.visible);
     this.addClasses(this.modalEl!, Modal.stateClasses.hidden);
+  
+    const event = new ModalEvent( 'modal-dismissed', this);
+    this.modalEl!.dispatchEvent(event);
   }
   
   
@@ -143,5 +150,28 @@ export class Modal {
     this.modalEl!.remove();
     delete this.modalEl;
     this.destroyed = true;
+  
+    const event = new ModalEvent('modal-destroyed', this);
+    this.modalEl!.dispatchEvent(event);
+  }
+  
+  
+  /**
+   * Gets the modal settings
+   */
+  public getSettings(): ModalSettings {
+    return cloneDeep<ModalSettings>(this.settings);
+  }
+  
+  
+  /**
+   * Adds a listener to the modal event
+   *
+   * @param type
+   * @param callback
+   * @param passive
+   */
+  public addEventListener( type: ModalEvents | string, callback:(event:Event) => void, passive:boolean = true ) : void {
+    this.modalEl?.addEventListener(type, callback, {passive});
   }
 }

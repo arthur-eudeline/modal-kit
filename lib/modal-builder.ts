@@ -1,4 +1,5 @@
 import {ModalClasses, ModalSettings} from "../types";
+import {Modal} from "./modal";
 
 
 /**
@@ -14,6 +15,12 @@ export class ModalBuilder {
   private readonly settings:ModalSettings;
   
   /**
+   * Stores the modal instance bound to the builder
+   * @private
+   */
+  private readonly modal:Modal;
+  
+  /**
    * The base classes that will be applied to each modal element
    */
   static readonly classes: Required<ModalClasses> = {
@@ -27,15 +34,19 @@ export class ModalBuilder {
       container: [ 'modal-dismiss-btn-container' ],
       btn: [ 'modal-dismiss-btn' ],
     },
+    variations: {
+      dismissible: [ 'modal-dismissible' ]
+    }
   }
   
   
   /**
    * The builder constructor
-   * @param settings
+   * @param modal
    */
-  public constructor (settings:ModalSettings) {
-    this.settings = settings;
+  public constructor (modal:Modal) {
+    this.modal = modal;
+    this.settings = modal.getSettings();
   }
   
   
@@ -49,6 +60,13 @@ export class ModalBuilder {
     // Add the classes
     el.classList.add( ...ModalBuilder.classes.container!, ...(this.settings.classes?.container ?? []) );
     
+    // Add variations classes to the root element
+    if (this.settings.dismissible)
+      el.classList.add( ...ModalBuilder.classes.variations.dismissible );
+    
+    // Add an html attribute to define the root element
+    el.setAttribute( 'data-modal-root', '' );
+    
     return el;
   }
   
@@ -61,6 +79,10 @@ export class ModalBuilder {
     const el = document.createElement('div');
     
     el.classList.add( ...ModalBuilder.classes.overlay, ...(this.settings.classes?.overlay ?? []) );
+  
+    // Add overlay's onclick event
+    if (this.settings.dismissible && (this.settings.overlay === true || (typeof this.settings.overlay === "object" && this.settings.overlay.dismissible) ))
+      el.onclick = (e) => { this.modal.dismiss(); }
     
     return el;
   }
@@ -106,6 +128,9 @@ export class ModalBuilder {
     // Builds the btn
     const btn = document.createElement('i');
     btn.classList.add( ...ModalBuilder.classes.dismissBtn.btn!, ...(this.settings.classes?.dismissBtn?.btn ?? []) );
+    
+    if (this.settings.dismissible === true)
+      btn.onclick = (e) => { this.modal.dismiss(); }
     
     container.appendChild(btn);
     

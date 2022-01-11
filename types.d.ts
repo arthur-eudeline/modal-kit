@@ -67,6 +67,11 @@ declare interface ModalSettings {
 }
 
 /**
+ * Defines different possible values for modal events
+ */
+declare type ModalEvents = 'modal-shown' | 'modal-dismissed' | 'modal-destroyed';
+
+/**
  * Holds the different classes that will be applied on each modal part
  */
 declare interface ModalClasses {
@@ -116,8 +121,23 @@ declare interface ModalClasses {
      */
     btn?: string[],
   },
+  
+  /**
+   * The CSS classes that will be applied to the modal's root according to its variation
+   * eg: dismissible, transparent, ...
+   */
+  variations?: {
+    /**
+     * The CSS classes that will be applied to the modal's root if it is dismissible
+     */
+    dismissible: string[],
+  }
 }
 
+/**
+ * The different classes that will be applied on modal's elements
+ * according to its state
+ */
 declare interface ModalStateClasses {
   /**
    * A list of CSS classes applied to the modal root
