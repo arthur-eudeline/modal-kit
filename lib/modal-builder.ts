@@ -108,7 +108,7 @@ export class ModalBuilder {
     
     // Add variations classes to the root element
     if (this.settings.dismissible)
-      el.classList.add( ...ModalBuilder.classes.variations.dismissible );
+      el.classList.add( ...ModalBuilder.classes.variations.dismissible, ...(this.settings.classes?.variations?.dismissible ?? []) );
     
     // Add an html attribute to define the root element
     el.setAttribute( 'data-modal-root', '' );
