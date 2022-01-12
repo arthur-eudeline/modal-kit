@@ -2,7 +2,7 @@ import {ModalEvents, ModalSettings, ModalStateClasses} from "../types";
 import {ModalBuilder} from "./modal-builder";
 import {isClassListEmpty} from "./utils";
 import {ModalEvent} from "./modal-event";
-import {cloneDeep} from "lodash";
+import cloneDeep from "lodash.clonedeep";
 import {uid} from 'uid';
 
 

@@ -6,9 +6,6 @@ const config = WebpackConfigBuilder()
     absolute: join(__dirname, './dist'),
     relative: './dist'
   })
-  .enableFilenamesHash(false)
-  .enableOptimization( false)
-  .enableAssetFile(true)
   // Entries
   .addEntry(
     join(__dirname, './lib/index.ts'),
@@ -23,6 +20,7 @@ const config = WebpackConfigBuilder()
     directory: join(__dirname, 'demo'),
     publicPath: '/',
   })
+  .enableOutputCleaning(true)
   .build();
 
 module.exports = config;
