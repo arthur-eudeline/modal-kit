@@ -1,5 +1,5 @@
 {
-  "name": "@arthur-eudeline/modal-kit",
+  "name": "@arthur.eudeline/modal-kit",
   "version": "0.0.0",
   "description": "A lightweight modal library",
   "main": "dist/index.js",
