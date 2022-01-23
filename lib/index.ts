@@ -28,5 +28,7 @@ const ModalKit = {
   }
 };
 
-window.modalKit = ModalKit;
 export default ModalKit;
+export {
+  Modal
+}

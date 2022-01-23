@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A lightweight modal library",
   "main": "dist/index.js",
-  "types": "types.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --all",
     "build": "NODE_ENV=production; webpack --mode production",
@@ -25,23 +25,32 @@
   },
   "homepage": "https://github.com/arthur-eudeline/modal-kit#readme",
   "dependencies": {
+    "@arthur.eudeline/build-kit": "file:../arthur.eudeline-build-kit-0.0.6.tgz",
+    "lodash.clonedeep": "^4.5.0",
     "tailwindcss": "^3.0.12",
-    "uid": "^2.0.0",
-    "lodash.clonedeep": "^4.5.0"
+    "uid": "^2.0.0"
   },
   "devDependencies": {
     "@alex_neo/jest-expect-message": "^1.0.5",
-    "@arthur.eudeline/build-kit": "file:../arthur.eudeline-build-kit-0.0.6.tgz",
+    "@types/assets-webpack-plugin": "^7.1.0",
+    "@types/duplicate-package-checker-webpack-plugin": "^2.1.2",
     "@types/jest": "^27.4.0",
     "@types/jsdom": "^16.2.14",
     "@types/lodash.clonedeep": "^4.5.6",
+    "@types/mini-css-extract-plugin": "^2.4.0",
+    "@types/postcss-import": "^14.0.0",
     "jest": "^27.4.7",
     "jsdom": "^19.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom",
     "transform": {
-      "\\.ts$": ["babel-jest", { "configFile":  "./tests/config/babel.config.js"}]
+      "\\.ts$": [
+        "babel-jest",
+        {
+          "configFile": "./tests/config/babel.config.js"
+        }
+      ]
     },
     "setupFilesAfterEnv": [
       "@alex_neo/jest-expect-message"

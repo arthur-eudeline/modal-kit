@@ -1,23 +1,23 @@
 import {Modal, ModalKit} from "./lib";
 
 
-declare global {
+export declare global {
   interface Window {
     modalKit: typeof ModalKit
   }
-  
+
   const modalKit:typeof ModalKit
 }
 
 /**
  * Defines what can be used for building a modal element
  */
-type ModalElement = HTMLElement | string | ((modal:Modal) => string | HTMLElement);
+export declare type ModalElement = HTMLElement | string | ((modal:Modal) => string | HTMLElement);
 
 /**
  * Defines the modal settings structure
  */
-declare interface ModalSettings {
+export declare interface ModalSettings {
   /**
    * An HTML ID that will be assign to the modal root.
    * If not provided, it will be generated
@@ -80,12 +80,12 @@ declare interface ModalSettings {
 /**
  * Defines different possible values for modal events
  */
-declare type ModalEvents = 'modal-initialized' | 'modal-shown' | 'modal-dismissed' | 'modal-destroyed';
+export declare type ModalEvents = 'modal-initialized' | 'modal-shown' | 'modal-dismissed' | 'modal-destroyed';
 
 /**
  * Holds the different classes that will be applied on each modal part
  */
-declare interface ModalClasses {
+export declare interface ModalClasses {
   /**
    * Additional classes applied to the modal container
    * which is the very root of the modal
@@ -149,7 +149,7 @@ declare interface ModalClasses {
  * The different classes that will be applied on modal's elements
  * according to its state
  */
-declare interface ModalStateClasses {
+export declare interface ModalStateClasses {
   /**
    * A list of CSS classes applied to the modal root
    * when it is hidden
