@@ -12,8 +12,8 @@ const config = WebpackConfigBuilder()
     'index'
   )
   .addEntry(
-    join(__dirname, './lib/assets/css/classic.scss'),
-    'css/classic'
+    join(__dirname, './lib/browser.ts'),
+    'browser'
   )
   // Dev server
   .addDevServerStatic({
@@ -21,6 +21,12 @@ const config = WebpackConfigBuilder()
     publicPath: '/',
   })
   .enableOutputCleaning(true)
+  .enableFilenamesHash(false)
+  .enableOptimization(false)
+  .enableTypescriptDeclaration(true)
   .build();
+
+// Used for exporting in the bundle file and making it importable by others projects
+config.output.libraryTarget = "commonjs";
 
 module.exports = config;
