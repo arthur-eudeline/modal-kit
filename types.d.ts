@@ -166,3 +166,53 @@ export declare interface ModalStateClasses {
    */
   visible: string[],
 }
+
+/**
+ * Holds the HTML Elements that's part of the modal
+ */
+export declare interface ModalElements {
+  /**
+   * The modal root element directly holds overlay and the container element
+   */
+  root: HTMLDivElement,
+  
+  /**
+   * The overlay DIV element
+   */
+  overlay?:HTMLDivElement,
+  
+  /**
+   * The dismiss button of the modal if it has one
+   */
+  dismissButton?: {
+    /**
+     * The button container element
+     */
+    container:HTMLDivElement,
+  
+    /**
+     * The button element
+     */
+    btn:HTMLElement,
+  },
+  
+  /**
+   * The modal container element which holds the title, body and actions
+   */
+  container:HTMLDivElement,
+  
+  /**
+   * The modal title element
+   */
+  title?:HTMLDivElement,
+  
+  /**
+   * The modal body element
+   */
+  body:HTMLDivElement,
+  
+  /**
+   * The modal actions root element
+   */
+  actions?:HTMLElement,
+}

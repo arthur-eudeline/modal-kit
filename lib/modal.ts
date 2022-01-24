@@ -1,4 +1,4 @@
-import {ModalEvents, ModalSettings, ModalStateClasses} from "../types";
+import {ModalElements, ModalEvents, ModalSettings, ModalStateClasses} from "../types";
 import {ModalBuilder} from "./modal-builder";
 import {isClassListEmpty} from "./utils";
 import {ModalEvent} from "./modal-event";
@@ -39,12 +39,6 @@ export class Modal {
   private readonly settings:ModalSettings;
   
   /**
-   * Holds the modal element built by the builder at modal initialization
-   * @private
-   */
-  private modalEl?:HTMLElement;
-  
-  /**
    * Indicates if the modal has been added to the DOM or not
    * @private
    */
@@ -62,6 +56,8 @@ export class Modal {
    */
   private id:string;
   
+  private elements:ModalElements;
+  
   /**
    * The modal constructor
    * @param settings
@@ -74,7 +70,7 @@ export class Modal {
     
     this.id = this.settings.id;
     
-    this.modalEl = new ModalBuilder(this).build();
+    this.elements = new ModalBuilder(this).build();
   }
   
   
@@ -118,16 +114,16 @@ export class Modal {
       return;
     
     if (!this.addedToDOM) {
-      document.body.appendChild(this.modalEl!);
+      document.body.appendChild(this.elements.root!);
       this.addedToDOM = true;
-      this.modalEl!.dispatchEvent( new ModalEvent('modal-initialized', this) );
+      this.elements.root!.dispatchEvent( new ModalEvent('modal-initialized', this) );
     }
     
-    this.removeClasses(this.modalEl!, Modal.stateClasses.hidden);
-    this.addClasses(this.modalEl!, Modal.stateClasses.visible);
+    this.removeClasses(this.elements.root!, Modal.stateClasses.hidden);
+    this.addClasses(this.elements.root!, Modal.stateClasses.visible);
     
     const event = new ModalEvent('modal-shown', this);
-    this.modalEl!.dispatchEvent(event);
+    this.elements.root!.dispatchEvent(event);
   };
   
   /**
@@ -141,11 +137,11 @@ export class Modal {
     if (this.destroyed)
       return;
     
-    this.removeClasses(this.modalEl!, Modal.stateClasses.visible);
-    this.addClasses(this.modalEl!, Modal.stateClasses.hidden);
+    this.removeClasses(this.elements.root!, Modal.stateClasses.visible);
+    this.addClasses(this.elements.root!, Modal.stateClasses.hidden);
     
     const event = new ModalEvent( 'modal-dismissed', this);
-    this.modalEl!.dispatchEvent(event);
+    this.elements.root!.dispatchEvent(event);
   };
   
   
@@ -161,10 +157,11 @@ export class Modal {
       return;
     
     const event = new ModalEvent('modal-destroyed', this);
-    this.modalEl!.dispatchEvent(event);
+    this.elements.root!.dispatchEvent(event);
     
-    this.modalEl!.remove();
-    delete this.modalEl;
+    this.elements.root!.remove();
+    // @ts-ignore
+    delete this.elements;
     this.destroyed = true;
   };
   
@@ -183,14 +180,14 @@ export class Modal {
    * @param passive
    */
   public addEventListener = ( type: ModalEvents | string, callback:(event:Event) => void, passive:boolean = true ):void => {
-    this.modalEl?.addEventListener(type, callback, {passive});
+    this.elements.root?.addEventListener(type, callback, {passive});
   };
   
   
   /**
-   * Gets the modal HTML Element
+   * Gets the modal HTML Elements
    */
-  public getElement() : HTMLElement | undefined {
-    return this.modalEl;
+  public getElements() : ModalElements{
+    return this.elements;
   }
 }

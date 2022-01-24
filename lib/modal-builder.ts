@@ -1,4 +1,4 @@
-import {ModalClasses, ModalElement, ModalSettings} from "../types";
+import {ModalClasses, ModalElement, ModalElements, ModalSettings} from "../types";
 import {Modal} from "./modal";
 
 
@@ -97,7 +97,7 @@ export class ModalBuilder {
    * Builds the modal container, which is the very root element of the modal
    * @private
    */
-  private buildContainer() : HTMLDivElement {
+  private buildContainer(elements:Partial<ModalElements>) : HTMLDivElement {
     const el = document.createElement('div');
     
     // Sets the ID
@@ -113,6 +113,9 @@ export class ModalBuilder {
     // Add an html attribute to define the root element
     el.setAttribute( 'data-modal-root', '' );
     
+    // Assign the root to the elements object
+    elements.root = el;
+    
     return el;
   }
   
@@ -121,7 +124,7 @@ export class ModalBuilder {
    * Builds the modal overlay element
    * @private
    */
-  private buildOverlay () : HTMLDivElement {
+  private buildOverlay (elements:Partial<ModalElements>) : HTMLDivElement {
     const el = document.createElement('div');
     
     el.classList.add( ...ModalBuilder.classes.overlay, ...(this.settings.classes?.overlay ?? []) );
@@ -129,6 +132,8 @@ export class ModalBuilder {
     // Add overlay's onclick event
     if (this.settings.dismissible && (this.settings.overlay === true || (typeof this.settings.overlay === "object" && this.settings.overlay.dismissible) ))
       el.onclick = (_) => { this.modal.dismiss(); }
+    
+    elements.overlay = el;
     
     return el;
   }
@@ -138,25 +143,27 @@ export class ModalBuilder {
    * Builds the modal main element which contains the title, body and actions
    * @private
    */
-  private buildModal() : HTMLDivElement {
+  private buildModal(elements: Partial<ModalElements>) : HTMLDivElement {
     // Builds the modal element
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.modal, ...(this.settings.classes?.modal ?? []) );
     
     // Adds the dismiss button
     if (this.settings.dismissible)
-      el.appendChild( this.buildDismissBtn() );
+      el.appendChild( this.buildDismissBtn(elements) );
     
     // Adds the title element
     if (this.settings.title)
-      el.appendChild( this.buildTitle() );
+      el.appendChild( this.buildTitle(elements) );
     
     // Adds the body
-    el.appendChild( this.buildBody() );
+    el.appendChild( this.buildBody(elements) );
     
     // Adds the actions
     if (this.settings.actions !== undefined && this.settings.actions.length > 0)
-      el.appendChild( this.buildActions() );
+      el.appendChild( this.buildActions(elements) );
+    
+    elements.container = el;
     
     return el;
   }
@@ -166,7 +173,7 @@ export class ModalBuilder {
    * Builds the dismiss button element
    * @private
    */
-  private buildDismissBtn(): HTMLDivElement {
+  private buildDismissBtn(elements: Partial<ModalElements>): HTMLDivElement {
     // Builds the button container
     const container = document.createElement('div');
     container.classList.add( ...ModalBuilder.classes.dismissBtn.container!, ...(this.settings.classes?.dismissBtn?.container ?? []) );
@@ -180,6 +187,11 @@ export class ModalBuilder {
     
     container.appendChild(btn);
     
+    elements.dismissButton = {
+      container: container,
+      btn: btn,
+    };
+    
     return container;
   }
   
@@ -188,10 +200,12 @@ export class ModalBuilder {
    * Builds the title element
    * @private
    */
-  private buildTitle(): HTMLDivElement {
+  private buildTitle(elements: Partial<ModalElements>): HTMLDivElement {
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.title, ...(this.settings.classes?.title ?? []) );
     this.handleModalElement(el,this.settings.title);
+    
+    elements.title = el;
     
     return el;
   }
@@ -201,10 +215,12 @@ export class ModalBuilder {
    * Builds the modal body element
    * @private
    */
-  private buildBody(): HTMLDivElement {
+  private buildBody(elements: Partial<ModalElements>): HTMLDivElement {
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.body, ...(this.settings.classes?.body ?? []) );
     this.handleModalElement(el, this.settings.body);
+    
+    elements.body = el;
     
     return el;
   }
@@ -214,10 +230,12 @@ export class ModalBuilder {
    * Builds the modal actions element
    * @private
    */
-  private buildActions(): HTMLDivElement {
+  private buildActions(elements: Partial<ModalElements>): HTMLDivElement {
     const el = document.createElement('div');
     el.classList.add( ...ModalBuilder.classes.actions, ...(this.settings.classes?.actions ?? []) );
     this.handleModalElement(el, this.settings.actions);
+    
+    elements.actions = el;
     
     return el;
   }
@@ -226,18 +244,20 @@ export class ModalBuilder {
   /**
    * Builds the modal element
    */
-  public build() : HTMLElement {
+  public build() : ModalElements {
+    const elements:Partial<ModalElements> = {};
+    
     // Gets the modal container element
-    const container = this.buildContainer();
+    const container = this.buildContainer(elements);
     
     // Adds the overlay
     if (this.settings.overlay)
-      container.appendChild( this.buildOverlay() );
+      container.appendChild( this.buildOverlay(elements) );
     
     // Adds the modal
-    container.appendChild( this.buildModal() );
+    container.appendChild( this.buildModal(elements) );
     
-    return container;
+    return elements as ModalElements;
   }
   
 }
